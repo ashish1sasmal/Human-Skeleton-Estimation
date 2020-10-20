@@ -5,12 +5,13 @@
 
 import cv2
 import numpy as np
+import time
 
 proto = "Models/pose_deploy_linevec_faster_4_stages.prototxt"
 weights= "Models/pose_iter_160000.caffemodel"
 
 
-image = cv2.imread("single.jpg")
+image = cv2.imread("test2.jpg")
 image_copy = np.copy(image)
 image_wid = image.shape[1]
 image_height = image.shape[0]
@@ -23,6 +24,7 @@ print("Using CPU device")
 wid = 368
 height=368
 
+t = time.time()
 blob = cv2.dnn.blobFromImage(image, 1.0/255, (wid,height), (0,0,0), swapRB = False, crop = False)
 
 
@@ -30,6 +32,8 @@ net.setInput(blob)
 POSE_PAIRS = [[0,1], [1,2], [2,3], [3,4], [1,5], [5,6], [6,7], [1,14], [14,8], [8,9], [9,10], [14,11], [11,12], [12,13] ]
 
 preds = net.forward()
+
+print("Total time taken : {:.3f}".format(time.time() - t))
 
 H = preds.shape[2]
 W = preds.shape[3]
